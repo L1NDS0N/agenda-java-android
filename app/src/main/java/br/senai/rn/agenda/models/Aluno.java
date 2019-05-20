@@ -1,32 +1,68 @@
 package br.senai.rn.agenda.models;
 
-public class Aluno {
+import java.io.Serializable;
+import java.util.Objects;
 
-    private final String nome;
-    private final String telefone;
-    private final String email;
+public class Aluno implements Serializable, Comparable<Aluno> {
 
-    public Aluno(String nome, String telefone, String email) {
-        this.nome = nome;
-        this.telefone = telefone;
-        this.email = email;
+    private Long id;
+    private String nome;
+    private String telefone;
+    private String email;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNome() {
         return nome;
     }
 
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
     public String getTelefone() {
         return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
     public String getEmail() {
         return email;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Aluno aluno = (Aluno) o;
+        return id.equals(aluno.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
     @Override
     public String toString() {
-        return this.nome;
+        return nome;
+    }
+
+    @Override
+    public int compareTo(Aluno aluno) {
+        return nome.compareTo(aluno.nome);
     }
 
 }

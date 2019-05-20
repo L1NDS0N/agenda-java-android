@@ -5,14 +5,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import java.io.Serializable;
 
 import br.senai.rn.activities.R;
 import br.senai.rn.agenda.daos.AlunoDAO;
@@ -32,15 +29,18 @@ public class ListaAlunosActivity extends AppCompatActivity {
         setTitle(TITULO_APPBAR);
         inicializarComponentes();
         definirEventos();
-
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        AlunoDAO dao = new AlunoDAO();
+
         listaAlunos.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, dao.obterTodos()));
+    }
+
+    private void inicializarComponentes() {
+        listaAlunos = findViewById(R.id.activity_lista_alunos_lista);
+        botaoAdicionar = findViewById(R.id.activity_lista_alunos_fab_novo_aluno);
     }
 
     private void definirEventos() {
@@ -51,26 +51,23 @@ public class ListaAlunosActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
         listaAlunos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Aluno aluno = dao.obterTodos().get(position);
-                Toast
-                        .makeText(ListaAlunosActivity.this,
-                        "Selecionado: "+ aluno.getNome(),
-                        Toast.LENGTH_LONG)
-                        .show();
-                Log.i("--Posição do aluno: ", ""+ position);
+                Aluno alunoSelecionado = dao.obterTodos().get(position);
                 Intent intent = new Intent(ListaAlunosActivity.this, FormularioAlunoActivity.class);
-                intent.putExtra("aluno", (Serializable) aluno);
+                intent.putExtra("aluno", alunoSelecionado);
                 startActivity(intent);
             }
         });
-        };
-
-    private void inicializarComponentes() {
-        listaAlunos = findViewById(R.id.activity_lista_alunos_lista);
-        botaoAdicionar = findViewById(R.id.activity_lista_alunos_fab_novo_aluno);
+        listaAlunos.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Aluno alunoSelecionado = (Aluno) parent.getItemAtPosition(position);
+                dao.remover(alunoSelecionado);
+                return true;
+            }
+        });
     }
+
 }

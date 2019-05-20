@@ -1,24 +1,35 @@
 package br.senai.rn.agenda.daos;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import br.senai.rn.agenda.models.Aluno;
 
-public class AlunoDAO implements Serializable {
+public class AlunoDAO {
 
-    private static List<Aluno> alunos = new ArrayList<>(Arrays.asList(new Aluno("Lindson", "986326467", "l1nds0n@hotmail.com")));
-
+    private static Long contadorDeIds = 1L;
+    private static List<Aluno> alunos = new ArrayList<>();
 
     public void salvar(Aluno aluno) {
-        alunos.add(aluno);
+        if (aluno.getId() == null) {
+            aluno.setId(contadorDeIds);
+            alunos.add(aluno);
+            contadorDeIds++;
+        } else {
+            int posicao = alunos.indexOf(aluno);
+            alunos.set(posicao, aluno);
+        }
     }
 
     public List<Aluno> obterTodos() {
-        return new ArrayList<>(alunos);
+        List<Aluno> copiaAlunos = new ArrayList<>(alunos);
+        Collections.sort(copiaAlunos);
+        return copiaAlunos;
     }
 
+    public void remover(Aluno aluno) {
+        alunos.remove(aluno);
+    }
 
 }
