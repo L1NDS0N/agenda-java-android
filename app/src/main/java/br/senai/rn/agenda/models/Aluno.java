@@ -10,6 +10,14 @@ public class Aluno implements Serializable, Comparable<Aluno> {
     private String telefone;
     private String email;
 
+    public Aluno() {}
+
+    public Aluno(String nome, String telefone, String email) {
+        this.nome = nome;
+        this.telefone = telefone;
+        this.email = email;
+    }
+
     public Long getId() {
         return id;
     }
