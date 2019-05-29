@@ -4,12 +4,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import br.senai.rn.activities.R;
+import br.senai.rn.agenda.R;
 import br.senai.rn.agenda.daos.AlunoDAO;
 import br.senai.rn.agenda.models.Aluno;
 
@@ -19,25 +16,23 @@ public class FormularioAlunoActivity extends AppCompatActivity {
     private EditText campoNome;
     private EditText campoTelefone;
     private EditText campoEmail;
-    private Button botaoSalvar;
     private Aluno aluno;
     private AlunoDAO dao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_formulario_aluno);
+        setContentView(R.layout.activity_aluno_formulario);
         setTitle(TITULO_APPBAR);
         inicializarComponentes();
         inicializarAluno();
-//        definirEventos();
+        definirEventos();
     }
 
     private void inicializarComponentes() {
-        campoNome = findViewById(R.id.activity_formulario_aluno_et_nome);
-        campoTelefone = findViewById(R.id.activity_formulario_aluno_et_telefone);
-        campoEmail = findViewById(R.id.activity_formulario_aluno_et_email);
-        botaoSalvar = findViewById(R.id.activity_formulario_aluno_bt_salvar);
+        campoNome = findViewById(R.id.activity_aluno_formulario_et_nome);
+        campoTelefone = findViewById(R.id.activity_aluno_formulario_et_telefone);
+        campoEmail = findViewById(R.id.activity_aluno_formulario_et_email);
     }
 
     private void inicializarAluno() {
@@ -52,15 +47,7 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         }
     }
 
-//    private void definirEventos() {
-//        botaoSalvar.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                criarAluno();
-//                salvarAluno();
-//            }
-//        });
-//    }
+    private void definirEventos() {}
 
     private void criarAluno() {
         aluno.setNome(campoNome.getText().toString());
@@ -75,19 +62,22 @@ public class FormularioAlunoActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_formulario_aluno_menu, menu);
+        getMenuInflater().inflate(R.menu.activity_aluno_formulario_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int optionSelecionada = item.getItemId();
-        if (optionSelecionada == R.id.activity_formulario_menu_salvar) {
-            criarAluno();
-            salvarAluno();
-            Toast.makeText(this, aluno.getNome()+" ✔️ \uD83D\uDC4C ", Toast.LENGTH_SHORT).show();
+        int menuSelecionado = item.getItemId();
+
+        switch (menuSelecionado) {
+            case R.id.activity_aluno_formulario_menu_salvar:
+                criarAluno();
+                salvarAluno();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
 }
